@@ -15,11 +15,13 @@ import NavController from './components/NavController';
 import { AuthProvider } from './AuthContext';
 
 export default function App() {
+  
   const [loaded, setLoaded] = useState(false);
   const [client, setClient] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(null);
   const preLoad = async () => {
     try {
+      AsyncStorage.clear();
       await Font.loadAsync({
         ...AntDesign.font
       });
@@ -50,10 +52,10 @@ export default function App() {
     }
 
   }
-  useEffect(() => {
+  useEffect(async() => {
     preLoad();
-  }, []);
-
+  },[]);
+  
   return loaded && client ? (
     <ApolloProvider client={client} >
       <ThemeProvider theme={styles}>

@@ -15,12 +15,13 @@ const View = styled.View`
 `;
 
 export default ({ navigation }) => {
-  const emailInput = useInput("");
+  const emailInput = useInput(navigation.getParam("email",""));
   const [loading, setLoading] = useState(false);
-  const [requestSecret] = useMutation(LOG_IN, {
+  const [requestSecretMutation] = useMutation(LOG_IN, {
     variables: {
       email: emailInput.value
     }
+
   });
   const handleLogin = async () => {
     const { value } = emailInput;
@@ -34,12 +35,18 @@ export default ({ navigation }) => {
     }
     try {
       setLoading(true);
-      await requestSecret();
-      Alert.alert("이메일 체크");
-      navigation.navigate("Confirm");
+      const { data: { requestSecret} } = await requestSecretMutation();
+      if (requestSecret) {
+        Alert.alert("이메일을 확인해주세요");
+        navigation.navigate("Confirm", {email:value});
+        return;
+      } else { 
+        Alert.alert("Woops! 계정을 찾을수없어요!");
+        navigation.navigate("Signup");
+      }
     } catch (error) {
       console.log(error);
-      Alert.alert("캔트 로그인 나우");
+      Alert.alert("지금은 로그인할수 없어요 ╰（‵□′）╯");
     } finally {
       setLoading(false);
     }
@@ -52,7 +59,7 @@ export default ({ navigation }) => {
           placeholder="Email"
           keyboardType="email-address"
           returnKeyType="send"
-          onEndEditing={handleLogin}
+          onSubmitEditing={handleLogin}
           autoCorrect={false}
         />
         <AuthButton loading={loading} onPress={handleLogin} text="Log In" />
