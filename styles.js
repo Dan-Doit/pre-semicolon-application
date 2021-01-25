@@ -8,6 +8,7 @@ export default {
     blueColor: "#3897f0",
     navyColor: "#364152",
     redColor: "#ED4956",
+    searchColor:"#E4E7EC",
     greyColor: "#FAFAFA",
     lightGreyColor:"rgb(230,230,230)",
     brownColor: "#B3795D",

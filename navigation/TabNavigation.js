@@ -1,7 +1,9 @@
 import React from "react";
 import Home from "../screens/tabs/Home";
-import Search from "../screens/tabs/Search";
+import Search from "../screens/tabs/search/SearchContainer";
 import Profile from "../screens/tabs/Profile";
+import Detail from "../screens/Detail";
+import UserDetail from "../screens/UserDetail";
 import { View, Platform } from "react-native";
 import constants from "../constants";
 import styled from "styled-components";
@@ -14,12 +16,40 @@ import { AntDesign } from '@expo/vector-icons';
 import NavIcon from "../components/NavIcon";
 
 const stackFactory = (initialRoute, customConfig) =>
-  createStackNavigator({
-    InitialRoute: {
-      screen: initialRoute,
-      navigationOptions: { ...customConfig }
+  createStackNavigator(
+    {
+      InitialRoute: {
+        screen: initialRoute,
+        navigationOptions: {
+          ...customConfig
+        }
+      },
+      Detail: {
+        screen: Detail,
+        navigationOptions: {
+          headerTintColor: styles.blackColor,
+          // Router값이 이상한걸 Back으로 수정
+          headerBackTitle: " ",
+          title: "Photo"
+        }
+      },
+      UserDetail: {
+        screen: UserDetail,
+        navigationOptions: ({ navigation })=>({
+          title: navigation.getParam("username"),
+          headerTintColor: styles.blackColor,
+          // Router값이 이상한걸 Back으로 수정
+          headerBackTitle: " ",
+        })
+      }
+    },
+    {
+      defaultNavigationOptions: {
+        headerBackTitle: null,
+        headerTintColor: styles.blackColor
+      }
     }
-  });
+  );
 
 const Image = styled.Image`
   margin : -30px 0px;
@@ -30,8 +60,8 @@ export default createBottomTabNavigator(
   {
     Home: {
       screen: stackFactory(Home, {
-        headerRight: <MessagesLink />,
-        headerTitle: <Image resizeMode={"contain"} source={require("../assets/logo.png")} />
+        headerRight: () => <MessagesLink />,
+        headerTitle: () => <Image resizeMode={"contain"} source={require("../assets/logo.png")} />
       }),
       navigationOptions: {
         tabBarIcon: ({focused}) => (
@@ -43,8 +73,9 @@ export default createBottomTabNavigator(
     },
     Search: {
       screen: stackFactory(Search, {
-        title: "Search"
+        headerBackTitle : " "
       }),
+
       navigationOptions: {
         tabBarIcon: ({focused}) => (
           <NavIcon
@@ -88,7 +119,9 @@ export default createBottomTabNavigator(
     }
   },
   {
+    initialRouteName : "Search",
     tabBarOptions: {
+      // 라벨 글씨 제거
       showLabel: false
     }
   }

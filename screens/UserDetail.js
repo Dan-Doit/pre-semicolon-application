@@ -1,14 +1,15 @@
-import React, { useEffect } from "react";
-import { ScrollView } from "react-native";
-import { gql } from "apollo-boost";
-import Loader from "../../components/Loader";
+import React from "react";
 import { useQuery } from "react-apollo-hooks";
-import UserProfile from "../../components/UserProfile";
+import { gql } from "apollo-boost";
+import { USER_FRAGMENT } from "../Fragments";
+import Loader from "../components/Loader";
+import { ScrollView } from "react-native";
+import UserProfile from "../components/UserProfile";
 
-export const ME = gql`
-  {
-    me {
-      user{
+const GET_USER = gql`
+  query seeUser($username: String!) {
+    seeUser(username: $username)  {
+    user{
           id
           avatar
           username
@@ -50,10 +51,16 @@ export const ME = gql`
 `;
 
 export default ({ navigation }) => {
-  const { loading, data } = useQuery(ME);
+  const { loading, data } = useQuery(GET_USER, {
+    variables: { username: navigation.getParam("username") }
+  });
   return (
     <ScrollView>
-      {loading ? <Loader /> : data && data.me && <UserProfile {...data.me} /> }
+      {loading ? (
+        <Loader />
+      ) : (
+        data && data.seeUser && <UserProfile {...data.seeUser} />
+      )}
     </ScrollView>
   );
 };

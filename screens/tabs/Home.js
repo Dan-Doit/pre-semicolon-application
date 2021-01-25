@@ -4,36 +4,15 @@ import { ScrollView, RefreshControl } from "react-native";
 import { gql } from "apollo-boost";
 import Loader from '../../components/Loader';
 import Post from '../../components/Post';
+import { POST_FRAGMENT } from "../../Fragments";
 
 const FEED_QUERY = gql`
 {
   seeFeed{
-    id
-    location
-    caption
-    user{
-      id
-      avatar
-      username
-    }
-    files{
-      id
-      url
-    }
-    likeCount
-    isLiked
-    comments{
-      id
-      text
-      user{
-        id
-        avatar
-        username
-      }
-    }
-    createdAt
+    ...PostParts
   }
 }
+${POST_FRAGMENT}
 `;
 
 

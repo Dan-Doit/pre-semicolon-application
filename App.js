@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { StatusBar, Platform } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font';
@@ -66,6 +67,7 @@ export default function App() {
     <ApolloProvider client={client} >
       <ThemeProvider theme={styles}>
         <AuthProvider isLoggedIn={isLoggedIn}>
+          {Platform.OS === "ios" ? <StatusBar barStyle="dark-content" /> : null}
           <NavController />
         </AuthProvider>
       </ThemeProvider>
