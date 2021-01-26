@@ -17,7 +17,7 @@ export const TOGGLE_LIKE = gql`
 `;
 
 const Container = styled.View`
-  margin-bottom: 40px;
+  margin-bottom: 15px;
 `;
 const Header = styled.View`
   padding: 15px;
@@ -85,24 +85,25 @@ const Post = ({
   return (
     <Container>
       <Header>
-        <Touchable onPress={() => navigation.navigate("UserDetail", {username:user.username})}>
+        <Touchable
+          onPress={() => navigation.navigate("UserDetail", { username: user.username })}>
           <Image
             style={{ height: 40, width: 40, borderRadius: 20 }}
             source={{ uri: user.avatar }}
           />
         </Touchable>
-        <Touchable onPress={() => navigation.navigate("UserDetail", {username:user.username})}>
+        <Touchable onPress={() => navigation.navigate("UserDetail", { username: user.username })}>
           <HeaderUserContainer>
             <Bold>{user.username}</Bold>
             <Location>{location}</Location>
           </HeaderUserContainer>
         </Touchable>
       </Header>
-      <Swiper style={{ height: constants.height / 2.1 }}
+      <Swiper style={{ height: constants.width/0.88 }}
       >
         {files.map(file => (
           <Image
-            style={{ width: constants.width, height: constants.height / 2.5 }}
+            style={{ width: constants.width, height: constants.width}}
             key={file.id}
             source={{ uri: file.url }}
           />

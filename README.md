@@ -1,4 +1,6 @@
-# Semicolon_app Start
+SemiColon iOS & Android APP
 
-Screens:
--[]
+Screens :
+
+- [ ] Home
+- [] Search

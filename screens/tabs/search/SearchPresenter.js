@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { ScrollView, RefreshControl } from "react-native";
+import styled from "styled-components/native";
 import PropTypes from "prop-types";
-import Loader from "../../../components/Loader";
-import SquarePhoto from "../../../components/SquarePhoto";
 import { gql } from "apollo-boost";
 import { useQuery } from "react-apollo-hooks";
+import Loader from "../../../components/Loader";
+import SquarePhoto from "../../../components/SquarePhoto";
 
 export const SEARCH = gql`
   query search($term: String!) {
@@ -27,7 +28,7 @@ const SearchPresenter = ({ term, shouldFetch }) => {
       term
     },
     skip: !shouldFetch,
-    fetchPolicy : "network-only"
+    fetchPolicy: "network-only"
   });
   const onRefresh = async () => {
     try {
@@ -39,8 +40,11 @@ const SearchPresenter = ({ term, shouldFetch }) => {
     }
   };
   return (
-      <ScrollView contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap' }}
-      refreshControl={ <RefreshControl onRefresh={onRefresh} refreshing={refreshing} /> } >
+    <ScrollView contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap' }}
+      refreshControl={
+        <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+      }
+      >
       {loading ? (
         <Loader />
       ) : (

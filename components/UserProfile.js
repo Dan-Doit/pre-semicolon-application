@@ -8,6 +8,7 @@ import { Platform } from "@unimodules/core";
 import constants from "../constants";
 import SquarePhoto from "./SquarePhoto";
 import Post from "./Post";
+import { useLogOut } from "../AuthContext";
 
 const ProfileHeader = styled.View`
   padding: 20px;
@@ -46,7 +47,9 @@ const ProfileMeta = styled.View`
   padding-horizontal: 20px;
 `;
 
-const Bio = styled.Text``;
+const Bio = styled.Text`
+  margin-top : 10px;
+`;
 
 const ButtonContainer = styled.View`
   padding-vertical: 5px;
@@ -55,24 +58,50 @@ const ButtonContainer = styled.View`
   margin-top: 30px;
 `;
 
+
 const Button = styled.View`
   width: ${constants.width / 2};
   align-items: center;
 `;
 
+const NameContainer = styled.View`
+  padding-vertical: 5px;
+  margin-top: -10px;
+  width:${constants.width / 2.2}
+  height :${constants.height / 10};
+`;
+
+const Button1 = styled.View`
+  margin-top:10px;
+  width:90px;
+  align-items: center;
+  margin-left : ${constants.width / 12 };
+  background-color:${styles.navyColor};
+  height:30px;
+  border-radius: 15px;
+`;
+
+const Text = styled.Text`
+margin-top : 5px;
+  color: white;
+  text-align: center;
+  font-weight: 600;
+`;
+
 const UserProfile = ({
-    user: {
-    avatar,
-    postsCount,
-    followersCount,
-    followingCount,
-    bio,
-    fullName,
+    user: { avatar,
+        postsCount,
+        followersCount,
+        followingCount,
+        bio,
+        fullName
     },
-    posts
+        posts
+    
 }) => {
+  posts.map(post=>console.log(post.id));
   const [isGrid, setIsGrid] = useState(true);
-    const toggleGrid = () => setIsGrid(i => !i);
+  const toggleGrid = () => setIsGrid(i => !i);
   return (
     <View>
       <ProfileHeader>
@@ -98,8 +127,18 @@ const UserProfile = ({
         </HeaderColumn>
       </ProfileHeader>
       <ProfileMeta>
+       <ProfileStats>
+          <NameContainer>
         <Bold>{fullName}</Bold>
-        <Bio>{bio}</Bio>
+        
+            <Bio>{bio}</Bio>
+          </NameContainer>
+          <NameContainer>
+          <Button1>
+            <TouchableOpacity onPress={useLogOut()}><Text>Log Out</Text></TouchableOpacity>
+            </Button1>
+          </NameContainer>
+          </ProfileStats>
       </ProfileMeta>
       <ButtonContainer>
         <TouchableOpacity onPress={toggleGrid}>
@@ -120,19 +159,16 @@ const UserProfile = ({
             />
           </Button>
         </TouchableOpacity>
-          </ButtonContainer>
-          {isGrid ?
-              <SquareBox>
-              {posts && posts.map(p => {
+      </ButtonContainer>
+      <SquareBox>
+          {isGrid ? <SquareBox>{posts && posts.map(p => {
               return (<SquarePhoto key={p.id} {...p} />)
-              })}</SquareBox>
-              :
-              <>
+          })}</SquareBox> : <>
               {posts && posts.map(p => {
                   return ( <Post key={p.id} {...p} />)
-              })}
-              </>}
-              
+              })}</>}
+              </SquareBox>
+
     </View>
   );
 };

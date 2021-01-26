@@ -1,5 +1,6 @@
-const apolloClientOptions = {
-    uri: "http://192.168.219.100:4000"
+const options = {
+  uri: "http://192.168.219.106:4000"
 }
 
-export default apolloClientOptions;
+
+export default options;

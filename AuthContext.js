@@ -3,9 +3,10 @@ import AsyncStorage from "@react-native-community/async-storage";
 
 export const AuthContext = createContext();
 
-export const AuthProvider = ({ children, isLoggedIn: userLoggedIn }) => {
-    const [isLoggedIn, setIsLoggedIn] = useState(userLoggedIn);
-    const logUserIn = async (token) => {
+export const AuthProvider = ({ children, isLoggedIn:isLoggedInProp }) => {
+    const [isLoggedIn, setIsLoggedIn] = useState(isLoggedInProp);
+
+    const logUserIn = async token => {
         try {
             await AsyncStorage.setItem("isLoggedIn", "true")
             await AsyncStorage.setItem("jwt", token);
@@ -13,32 +14,30 @@ export const AuthProvider = ({ children, isLoggedIn: userLoggedIn }) => {
         } catch (e) {
             console.log(e)
         }
-    };
-
+    }
     const logUserOut = async () => {
         try {
+            await AsyncStorage.removeItem("jwt");
             await AsyncStorage.setItem("isLoggedIn", "false")
             setIsLoggedIn(false)
         } catch (e) {
             console.log(e)
         }
     }
-    return (
-        <AuthContext.Provider value={{ isLoggedIn, logUserIn, logUserOut }}>
-            {children}
-        </AuthContext.Provider>)
-}                                   //key와 value형식으로 만들기 위해서 {}(오브젝트) 형식으로 만듦
+    return (<AuthContext.Provider value={{ isLoggedIn, logUserIn, logUserOut }}>{children}</AuthContext.Provider>);
+};
 
 export const useIsLoggedIn = () => {
-    const { isLoggedIn } = useContext(AuthContext)
-    //key와 value형식으로 만들기 위해서 {}(오브젝트) 형식으로 만듦
+    const { isLoggedIn } = useContext(AuthContext);
     return isLoggedIn;
-}
+};
+
 export const useLogIn = () => {
-    const { logUserIn } = useContext(AuthContext)
+    const { logUserIn } = useContext(AuthContext);
     return logUserIn;
 }
+
 export const useLogOut = () => {
-    const { logUserOut } = useContext(AuthContext)
+    const { logUserOut } = useContext(AuthContext);
     return logUserOut;
 }

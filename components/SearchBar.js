@@ -9,7 +9,7 @@ const SearchBar = ({ onChange, value, onSubmit }) => (
     style={{
       width: constants.width - 40,
       height: 35,
-      backgroundColor: styles.searchColor,
+      backgroundColor: styles.lightGreyColor,
       padding: 10,
       borderRadius: 5,
       textAlign: "center"

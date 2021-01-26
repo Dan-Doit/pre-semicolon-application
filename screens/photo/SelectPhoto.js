@@ -1,24 +1,23 @@
 import React, { useState, useEffect } from "react";
+import * as Permissions from "expo-permissions";
 import { Image, ScrollView, TouchableOpacity } from "react-native";
 import * as MediaLibrary from "expo-media-library";
-import styled from "styled-components/native";
+import styled from "styled-components";
 import Loader from "../../components/Loader";
 import constants from "../../constants";
-import { Camera } from 'expo-camera';
+import styles from "../../styles";
 
 const View = styled.View`
   flex: 1;
 `;
 
-const Text = styled.Text``;
-
-export default () => {
+export default ({ navigation }) => {
   const [loading, setLoading] = useState(true);
   const [hasPermission, setHasPermission] = useState(false);
-  const [selected, setSelected] = useState();
+  const [selected, setSelected] = useState([]);
   const [allPhotos, setAllPhotos] = useState();
   const changeSelected = photo => {
-    setSelected(photo);
+    setSelected(photo)
   };
   const getPhotos = async () => {
     try {
@@ -26,12 +25,15 @@ export default () => {
       const [firstPhoto] = assets;
       setSelected(firstPhoto);
       setAllPhotos(assets);
+      navigation.navigate("PhotoTabs", { photo: firstPhoto })
     } catch (e) {
       console.log(e);
     } finally {
       setLoading(false);
+
     }
   };
+
   const askPermission = async () => {
     try {
       const { status } = await MediaLibrary.requestPermissionsAsync();
@@ -44,9 +46,13 @@ export default () => {
       setHasPermission(false);
     }
   };
+
   useEffect(() => {
     askPermission();
   }, []);
+  
+  navigation.navigate("PhotoTabs", { photo: selected });
+  
   return (
     <View>
       {loading ? (
@@ -56,10 +62,10 @@ export default () => {
           {hasPermission ? (
             <>
               <Image
-                style={{ width: constants.width, height: constants.height / 2 }}
+                style={{ width: constants.width, height: constants.height / 1.7 }}
                 source={{ uri: selected.uri }}
-              />
-              <ScrollView contentContainerStyle={{ flexDirection: "row", flexWrap: "wrap"}}>
+                />
+              <ScrollView contentContainerStyle={{ flexDirection: "row", flexWrap:"wrap" }}>
                 {allPhotos.map(photo => (
                   <TouchableOpacity
                     key={photo.id}
@@ -74,7 +80,7 @@ export default () => {
                       }}
                     />
                   </TouchableOpacity>
-                ))}
+              ))}
               </ScrollView>
             </>
           ) : null}

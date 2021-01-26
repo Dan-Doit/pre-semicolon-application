@@ -1,10 +1,10 @@
 import React from "react";
 import { useQuery } from "react-apollo-hooks";
 import { gql } from "apollo-boost";
-import { ScrollView } from "react-native";
-import { POST_FRAGMENT } from "../Fragments";
+import { POST_FRAGMENT } from "../fragment";
 import Loader from "../components/Loader";
 import Post from "../components/Post";
+import { ScrollView } from "react-native";
 
 const POST_DETAIL = gql`
   query seeFullPost($id: String!) {
@@ -19,6 +19,7 @@ export default ({ navigation }) => {
   const { loading, data } = useQuery(POST_DETAIL, {
     variables: { id: navigation.getParam("id") }
   });
+  console.log(loading, data);
   return (
     <ScrollView styled={{ flex: 1 }}>
       {loading ? (

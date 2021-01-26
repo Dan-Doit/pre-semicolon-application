@@ -1,5 +1,6 @@
 import React from "react";
-import styled from "styled-components/native";
+import styled from 'styled-components/native';
+import { TouchableOpacity } from "react-native-gesture-handler";
 import constants from "../../constants";
 import AuthButton from "../../components/AuthButton";
 
@@ -10,8 +11,8 @@ const View = styled.View`
 `;
 
 const Image = styled.Image`
-  width: ${constants.width / 1.5};
   margin: -30px 0;
+  width: ${constants.width / 2.5};
 `;
 
 const Touchable = styled.TouchableOpacity``;

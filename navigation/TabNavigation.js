@@ -1,19 +1,27 @@
+import { View, Text, TouchableOpacity } from "react-native";
+import { createBottomTabNavigator } from 'react-navigation-tabs';
 import React from "react";
 import Home from "../screens/tabs/Home";
-import Search from "../screens/tabs/search/SearchContainer";
-import Profile from "../screens/tabs/Profile";
-import Detail from "../screens/Detail";
-import UserDetail from "../screens/UserDetail";
-import { View, Platform } from "react-native";
-import constants from "../constants";
-import styled from "styled-components";
-import styles from "../styles";
-import MessagesLink from "../components/MessagesLink";
+import Search from "../screens/tabs/search";
 import Notifications from "../screens/tabs/Notifications";
+import Profile from "../screens/tabs/Profile";
+import MessagesLink from "../components/MessagesLink";
+import Detail from "../screens/Detail";
 import { createStackNavigator } from 'react-navigation-stack';
-import { createBottomTabNavigator } from 'react-navigation-tabs';
-import { AntDesign } from '@expo/vector-icons'; 
+import { Platform } from "react-native";
 import NavIcon from "../components/NavIcon";
+import { AntDesign } from '@expo/vector-icons'; 
+import styled from "styled-components/native";
+import constants from "../constants";
+import styles from "../styles";
+import UserDetail from "../screens/UserDetail";
+
+const Image = styled.Image`
+  margin-top : -30px;
+  margin-bottom : -30px;
+  width: ${constants.width / 3};
+  
+`;
 
 const stackFactory = (initialRoute, customConfig) =>
   createStackNavigator(
@@ -27,59 +35,56 @@ const stackFactory = (initialRoute, customConfig) =>
       Detail: {
         screen: Detail,
         navigationOptions: {
+          headerBackTitle:" ",
           headerTintColor: styles.blackColor,
-          // Router값이 이상한걸 Back으로 수정
-          headerBackTitle: " ",
           title: "Photo"
         }
       },
+      
       UserDetail: {
         screen: UserDetail,
-        navigationOptions: ({ navigation })=>({
-          title: navigation.getParam("username"),
-          headerTintColor: styles.blackColor,
-          // Router값이 이상한걸 Back으로 수정
-          headerBackTitle: " ",
+        navigationOptions: ({ navigation }) => ({
+          title: navigation.getParam("username")
         })
       }
     },
     {
       defaultNavigationOptions: {
-        headerBackTitle: null,
-        headerTintColor: styles.blackColor
-      }
+        headerBackTitle: " ",
+        headerTintColor:styles.blackColor
     }
-  );
-
-const Image = styled.Image`
-  margin : -30px 0px;
-  width: ${constants.width / 3};
-`;
+  });
 
 export default createBottomTabNavigator(
   {
     Home: {
       screen: stackFactory(Home, {
-        headerRight: () => <MessagesLink />,
-        headerTitle: () => <Image resizeMode={"contain"} source={require("../assets/logo.png")} />
+        headerRight: <MessagesLink />,
+        headerTitle: ()=> <Image resizeMode={"contain"} source={require("../assets/logo.png")} />
       }),
       navigationOptions: {
         tabBarIcon: ({focused}) => (
           <NavIcon
             focused={focused}
-            name={Platform.OS === "ios"? focused ? "home-sharp" : "home-outline" : focused ? "home-sharp" : "home-outline"} size={26} />
+            name={ focused ? "home-sharp" : "home-outline"} />
         )
       }
     },
     Search: {
       screen: stackFactory(Search, {
-        headerBackTitle : " "
+        headerBackTitle:null
       }),
-
       navigationOptions: {
+        headerBackTitle:" ",
         tabBarIcon: ({focused}) => (
           <NavIcon
-            focused={focused} name={Platform.OS === "ios" ? focused ? "ios-search-sharp" : "ios-search-outline" : focused ? "md-search-sharp" : "md-search-outline"}  size={26} />
+            focused={focused}
+            name={Platform.OS === "ios" ?
+              (focused ? "ios-search-sharp" : "ios-search-outline")
+              :
+              (focused ? "md-search-sharp" : "md-search-outline")
+            }
+            size={28}/>
         )
       }
     },
@@ -90,7 +95,9 @@ export default createBottomTabNavigator(
           navigation.navigate("PhotoNavigation"),
         tabBarIcon: ({focused}) => (
           <NavIcon
-            focused={focused} name={Platform.OS === "ios" ? "ios-add" : "md-add"} size={ 32 } />
+            focused={focused}
+            name={Platform.OS === "ios" ? "ios-add" : "md-add"}
+            size={32} />
         )
       }
     },
@@ -101,8 +108,10 @@ export default createBottomTabNavigator(
       navigationOptions: {
         tabBarIcon: ({ focused }) => (
           <AntDesign
-            focused={focused} name={Platform.OS === "ios" ? focused ? "star" : "staro" : focused ? "star" : "staro"} size={26}
-            color={ focused ? styles.navyColor : styles.darkGreyColor } />
+            focused={focused}
+            name={focused ? "star" : "staro"}
+            color={focused ? styles.navyColor : styles.darkGreyColor}
+            size={26} />
         )
       }
     },
@@ -113,15 +122,15 @@ export default createBottomTabNavigator(
       navigationOptions: {
         tabBarIcon: ({focused}) => (
           <NavIcon
-            focused={focused} name={Platform.OS === "ios"? focused ? "person" : "person-outline" : focused ? "person" : "person-outline"} size={26} />
+            focused={focused}
+            name={focused ? "person" : "person-outline"} />
         )
       }
     }
   },
   {
-    initialRouteName : "Search",
+    initialRouteName:"Home",
     tabBarOptions: {
-      // 라벨 글씨 제거
       showLabel: false
     }
   }

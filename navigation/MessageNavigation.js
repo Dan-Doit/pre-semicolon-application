@@ -4,14 +4,20 @@ import Message from "../screens/messages/Message";
 import styles from "../styles";
 
 export default createStackNavigator({
-    Messages: {
+      Messages: {
         screen: Messages,
         navigationOptions: {
             headerTintColor: styles.blackColor,
-            // Router값이 이상한걸 Back으로 수정
             headerBackTitle: " ",
             title: "Messages"
         }
-    } ,
-    Message
+    },
+        Message: {
+        screen: Message,
+        navigationOptions: {
+            headerTintColor: styles.blackColor,
+            headerBackTitle: " ",
+            title: "Message"
+        }
+    },
 });

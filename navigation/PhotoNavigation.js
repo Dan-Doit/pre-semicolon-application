@@ -1,38 +1,41 @@
 import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
 import { createStackNavigator } from 'react-navigation-stack';
 import SelectPhoto from "../screens/photo/SelectPhoto";
-import TakePhoto from "../screens/photo/TakePhoto";
-import UploadPhoto from "../screens/photo/UploadPhoto";
+import TakePhoto from '../screens/photo/TakePhoto';
+import UploadPhoto from '../screens/photo/UploadPhoto'; 
 import styles from "../styles";
+import React from "react";
+import UploadLinks from "../components/UploadLinks";
+
 
 const PhotoTabs = createMaterialTopTabNavigator(
     {
-    SelectPhoto: {
+    Select: {
       screen: SelectPhoto,
       navigationOptions: {
-        tabBarLabel: "SelectPhoto"
+        tabBarLabel: "Select"
       }
     },
-    TakePhoto: {
+    Take: {
       screen: TakePhoto,
       navigationOptions: {
-        tabBarLabel: "TakePhoto"
+        tabBarLabel: "Take"
       }
     }
     },
     {
-    tabBarPosition: "bottom",
+      tabBarPosition: "bottom",
     tabBarOptions: {
       indicatorStyle: {
         backgroundColor: styles.navyColor,
         marginBottom: 48
       },
       labelStyle: {
-        color: styles.navyColor,
+        color: styles.blackColor,
         fontWeight: "600"
       },
       style: {
-          backgroundColor : styles.searchColor
+          backgroundColor: styles.searchColor
       }
     }
     }
@@ -40,25 +43,23 @@ const PhotoTabs = createMaterialTopTabNavigator(
 
 export default createStackNavigator({
     PhotoTabs: {
-        screen: PhotoTabs,
+    screen: PhotoTabs,
         navigationOptions: {
+            title: "Choose Photo",
             headerTintColor: styles.blackColor,
-            // Router값이 이상한걸 Back으로 수정
             headerBackTitle: " ",
-            title: "Photo"
+            headerRight: ()=>
+            <UploadLinks/>
         }
     },
-    UploadPhoto: {
+    Upload: {
         screen: UploadPhoto,
         navigationOptions: {
-          headerTintColor: styles.blackColor,
-          // Router값이 이상한걸 Back으로 수정
-          headerBackTitle: " ",
-          title: "UploadPhoto"
+            headerTintColor: styles.blackColor,
+            headerBackTitle: " ",
+            title: "UploadPhoto"
         }
     }
-},
-    {
-        mode: "modal"
-    }
-);
+}, {
+    mode:"modal"
+})

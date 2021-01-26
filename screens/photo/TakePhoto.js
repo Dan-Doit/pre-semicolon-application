@@ -6,7 +6,7 @@ import { Ionicons } from "@expo/vector-icons";
 import * as Permissions from "expo-permissions";
 import constants from "../../constants";
 import Loader from "../../components/Loader";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, Platform } from "react-native";
 import styles from "../../styles";
 
 const View = styled.View`
@@ -40,7 +40,8 @@ export default ({ navigation }) => {
         quality: 1
       });
       const asset = await MediaLibrary.createAssetAsync(uri);
-      console.log(asset);
+      setCanTakePhoto(true);
+      navigation.navigate("Upload", { photo: asset });
     } catch (e) {
       console.log(e);
       setCanTakePhoto(true);
@@ -89,7 +90,8 @@ export default ({ navigation }) => {
             <TouchableOpacity onPress={toggleType}>
               <Icon>
                 <Ionicons
-                  name={"camera-reverse-outline"}
+                  name={"camera-reverse-outline"
+                  }
                   size={32}
                   color={"white"}
                 />

@@ -4,14 +4,14 @@ import SearchPresenter from "./SearchPresenter";
 
 export default class extends React.Component {
   static navigationOptions = ({ navigation }) => ({
-    headerTitle: () => 
+    headerTitle: (
       <SearchBar
         value={navigation.getParam("term", "")}
         onChange={navigation.getParam("onChange", () => null)}
         onSubmit={navigation.getParam("onSubmit", () => null)}
       />
+    )
   });
-  
   constructor(props) {
     super(props);
     const { navigation } = props;
