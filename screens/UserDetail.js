@@ -53,7 +53,6 @@ export default ({ navigation }) => {
   const { loading, data } = useQuery(GET_USER, {
     variables: { username: navigation.getParam("username") }
   });
-  data.seeUser.posts.map(post=>console.log("여긴백입니다."+post.id))
   return (
     <ScrollView>
       {loading ? (

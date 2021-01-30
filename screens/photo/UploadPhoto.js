@@ -65,7 +65,7 @@ export default ({ navigation }) => {
   });
   const handleSubmit = async () => {
     if (captionInput.value === "" || locationInput.value === "") {
-      Alert.alert("All fields are required");
+      Alert.alert("빈칸을 채워주세요!","빈틈없이!!");
     }
     const formData = new FormData();
     const name = photo.filename;
@@ -79,7 +79,7 @@ export default ({ navigation }) => {
       setIsLoading(true);
       const {
         data: { location }
-      } = await axios.post("http://192.168.219.106:4000/api/upload", formData, {
+      } = await axios.post("https://jdsemicolon-backend.herokuapp.com/api/upload", formData, {
         headers: {
           "Content-type": "multipart/form-data"
         }
@@ -130,7 +130,7 @@ export default ({ navigation }) => {
             {loading ? (
               <ActivityIndicator color="white" />
             ) : (
-              <Text>Upload </Text>
+              <Text>Upload</Text>
             )}
           </Button>
         </Form>

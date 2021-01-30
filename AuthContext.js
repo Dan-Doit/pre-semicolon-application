@@ -12,7 +12,7 @@ export const AuthProvider = ({ children, isLoggedIn:isLoggedInProp }) => {
             await AsyncStorage.setItem("jwt", token);
             setIsLoggedIn(true)
         } catch (e) {
-            console.log(e)
+            console.log(e) 
         }
     }
     const logUserOut = async () => {
