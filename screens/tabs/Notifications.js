@@ -4,6 +4,7 @@ import Weather from "../../components/Weather";
 import Loader from "../../components/Loader";
 import * as Location from 'expo-location';
 import {Alert} from 'react-native';
+import Covid from "../../components/Covid";
 
 
 const View = styled.View`
@@ -17,26 +18,29 @@ const Text = styled.Text``;
 
 export default () => {
   const [loading, setLoading] = useState(true);
-  const [latitude, setLatitude] = useState(0);
-  const [longitude, setLongitude] = useState(0);
-
+  const [location, setLocation] = useState(null);
   
-  const getPermission = async () => {  
-    try {
-      await Location.requestPermissionsAsync();
-      const { coords: { latitude, longitude } } = await Location.getCurrentPositionAsync();
-      setLatitude(latitude);
-      setLongitude(longitude);
-      setLoading(false);
-      return;
-  } catch (e) {
-    console.log(e);
-      Alert.alert("당신을 찾을수 없어요 ㅠㅠ");
-      return ;
-    }
-  }
-  getPermission();
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert("Woops!","위치정보를 찾을수 없어요!")
+        return;
+      }
+
+      try {
+        const { coords: { latitude, longitude } } = await Location.getCurrentPositionAsync();
+        const [{ region }]  = await Location.reverseGeocodeAsync({latitude,longitude});
+        
+        setLocation({ latitude, longitude, region:region.toLowerCase() });
+        setLoading(false);
+       } catch { 
+        Alert.alert("위치를 찾을수없어요","다시 시도해 주세요 ㅠㅠ")
+      }
+
+    })();
+  }, []);
   
   return (
-    loading ? (<Loader />) : (<View><Weather latitude={latitude} longitude={longitude} /></View>)
+    loading ? (<Loader />) : (<View><Weather latitude={location.latitude} longitude={location.longitude} /><Covid location={location.region} /></View>)
   )};

@@ -19,7 +19,6 @@ export default ({ navigation }) => {
   const { loading, data } = useQuery(POST_DETAIL, {
     variables: { id: navigation.getParam("id") }
   });
-  console.log(loading, data);
   return (
     <ScrollView styled={{ flex: 1 }}>
       {loading ? (

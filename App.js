@@ -14,11 +14,15 @@ import { ThemeProvider } from 'styled-components';
 import styles from './styles';
 import NavController from './components/NavController';
 import { AuthProvider } from "./AuthContext";
+import * as Location from 'expo-location';
+import {Alert} from 'react-native';
 
 export default function App() {
   const [loaded, setLoaded] = useState(false);
   const [client, setClient] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(null);
+  const [location, setLocation] = useState(null);
+
   const preLoad = async () => {
     try {
       
@@ -54,7 +58,6 @@ export default function App() {
       console.log(e);
     }
   };
- 
 
   useEffect(() => { 
     preLoad();

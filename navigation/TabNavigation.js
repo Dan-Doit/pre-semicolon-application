@@ -15,13 +15,7 @@ import styled from "styled-components/native";
 import constants from "../constants";
 import styles from "../styles";
 import UserDetail from "../screens/UserDetail";
-
-const Image = styled.Image`
-  margin-top : -30px;
-  margin-bottom : -30px;
-  width: ${constants.width / 3};
-  
-`;
+import NavigationContainer from "./EventNavigation";
 
 const stackFactory = (initialRoute, customConfig) =>
   createStackNavigator(
@@ -60,7 +54,7 @@ export default createBottomTabNavigator(
     Home: {
       screen: stackFactory(Home, {
         headerRight: <MessagesLink />,
-        headerTitle: ()=> <Image resizeMode={"contain"} source={require("../assets/logo.png")} />
+        headerTitle: ()=> <NavigationContainer />
       }),
       navigationOptions: {
         tabBarIcon: ({focused}) => (
