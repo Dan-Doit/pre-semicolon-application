@@ -12,49 +12,33 @@ const Image = styled.Image`
   width: ${constants.width / 3};
 `;
 
-const View = styled.View`
-  justify-content: center;
-  align-items: center;
-  flex: 1;
-`;
-
-const GET_WEATHER = gql`
-  query weather($latitude: Float! , $longitude:Float!) {
-    weather(latitude: $latitude, longitude:$longitude){
+const GET_TODAYINFO = gql`
+  query todayInfo($location:String!, $latitude: Float! ,$longitude:Float!) {
+    todayInfo(location:$location, latitude: $latitude, longitude:$longitude){
+        newCase
+        countryName
         temp 
         weather
         }
     }
 `;
 
-const GET_COVID = gql`
-  query covid19($location:String!) {
-    covid19(location:$location){
-      countryName
-      newCase
-      }
-    }
-`;
-
 
 
 export default ({ location }) => {
-  const [index, setIndex] = useState(0);
-
-  const { data: weatherData, loading: weatherLoding } = useQuery(GET_WEATHER, {
+  
+  const { data , loading } = useQuery(GET_TODAYINFO, {
     variables: {
+      location: location.region,
       latitude: location.latitude,
       longitude: location.longitude
     }
   });
-  const { data: covidData, loading: covidLoading } = useQuery(GET_COVID, {
-    variables: {
-      location: location.region
-    }
-  });
-
+  
+  const [index, setIndex] = useState(0);
+  
   const saveViews = () => { 
-    if (index === 2) {
+  if (index === 2) {
       setTimeout(() => setIndex(0), 5000);
     } else {
       setTimeout(() => setIndex(index + 1), 5000);
@@ -65,26 +49,12 @@ export default ({ location }) => {
     saveViews();
   },[index])
 
-  return (covidData && weatherLoding ? (<Image resizeMode={"contain"} source={require("../../assets/logo.png")} />)
+  return (loading ? (<Image resizeMode={"contain"} source={require("../../assets/logo.png")} />)
     :     < NavigationView index = {index}
-            countryName = { covidData.covid19.countryName }
-            newCase = { covidData.covid19.newCase }
-            weather = { weatherData.weather.weather }
-            temp = { weatherData.weather.temp } />
+            countryName = { data.todayInfo.countryName }
+            newCase = { data.todayInfo.newCase }
+            weather = { data.todayInfo.weather }
+            temp = { data.todayInfo.temp } />
   
   )
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  temp: {
-    fontSize: 17,
-    fontWeight:'bold',
-    color: "black"
-  }
-});
